@@ -2,9 +2,9 @@
 
 module ProtocolSpec (spec) where
 
-import Protocol (Msg(..), Body(..))
+import Data.Aeson (decode, encode)
+import Protocol (Body (..), Msg (..))
 import Test.Hspec
-import Data.Aeson (encode, decode)
 
 spec :: Spec
 spec = do

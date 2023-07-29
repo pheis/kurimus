@@ -4,11 +4,11 @@
 
 module Protocol where
 
-import Data.Text qualified as T
 import Data.Aeson (FromJSON (parseJSON), Key, ToJSON (toJSON))
 import Data.Aeson.Extra (lodashMerge)
 import Data.Aeson.Types (Object, Parser, Value (Object), object, (.:), (.:?), (.=))
 import Data.Maybe (catMaybes)
+import Data.Text qualified as T
 import Deriving.Aeson
   ( CamelToSnake,
     ConstructorTagModifier,
@@ -18,7 +18,6 @@ import Deriving.Aeson
     OmitNothingFields,
     SumTaggedObject,
   )
-
 
 data Msg = Msg
   { src :: T.Text,
@@ -53,9 +52,8 @@ instance FromJSON Msg where
       <*> obj .: "body"
   parseJSON _ = fail "Failed to parse Msg"
 
-
 data Body where
-  Init :: { nodeId :: T.Text, nodeIds :: [T.Text] } -> Body
+  Init :: {nodeId :: T.Text, nodeIds :: [T.Text]} -> Body
   Echo :: {echo :: T.Text} -> Body
   EchoOk :: {echo :: T.Text} -> Body
   deriving (Eq, Generic, Show)
