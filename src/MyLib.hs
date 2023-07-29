@@ -1,4 +1,4 @@
-module MyLib (someFunc) where
+module MyLib where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+run :: IO ()
+run = putStrLn "someFunc"
