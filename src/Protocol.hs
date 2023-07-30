@@ -9,10 +9,11 @@ module Protocol
     msgId,
     inReplyTo,
     body,
-    Body (Echo, EchoOk, Init, InitOk),
+    Body (Echo, EchoOk, Init, InitOk, Generate, GenerateOk),
     echo,
     nodeId,
     nodeIds,
+    _id,
   )
 where
 
@@ -28,6 +29,7 @@ import Deriving.Aeson
     FieldLabelModifier,
     Generic,
     OmitNothingFields,
+    StripPrefix,
     SumTaggedObject,
   )
 
@@ -69,12 +71,14 @@ data Body where
   InitOk :: Body
   Echo :: {echo :: T.Text} -> Body
   EchoOk :: {echo :: T.Text} -> Body
+  Generate :: Body
+  GenerateOk :: {_id :: T.Text} -> Body
   deriving (Eq, Generic, Show)
   deriving
     (FromJSON, ToJSON)
     via CustomJSON
           '[ OmitNothingFields,
-             FieldLabelModifier '[CamelToSnake],
+             FieldLabelModifier '[StripPrefix "_", CamelToSnake],
              SumTaggedObject "type" "payload",
              ConstructorTagModifier CamelToSnake
            ]
