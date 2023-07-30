@@ -10,6 +10,7 @@ import Data.Aeson.Extra (encodeStrict)
 import Data.ByteString.Char8 qualified as BS
 import Env (Env, fromInit, getNextId, ourNodeId)
 import Protocol (Body (Echo, EchoOk, InitOk, echo), Msg (Msg, body, dest, inReplyTo, msgId, src))
+import System.IO (hFlush, stdout)
 
 getMessage :: IO Msg
 getMessage = do
@@ -23,6 +24,9 @@ type EnvIO a = ReaderT Env IO a
 sendMessage :: Msg -> IO ()
 sendMessage msg = do
   BS.putStr bs
+  -- flush so that stdout redirection works
+	-- for some reason putStr does not flush the buffer
+  hFlush stdout
   where
     bs = encodeStrict msg `BS.append` "\n"
 
