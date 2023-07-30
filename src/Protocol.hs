@@ -2,7 +2,19 @@
 {-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Protocol where
+module Protocol
+  ( Msg (Msg),
+    src,
+    dest,
+    msgId,
+    inReplyTo,
+    body,
+    Body (Echo, EchoOk, Init, InitOk),
+    echo,
+    nodeId,
+    nodeIds,
+  )
+where
 
 import Data.Aeson (FromJSON (parseJSON), Key, ToJSON (toJSON))
 import Data.Aeson.Extra (lodashMerge)
@@ -54,6 +66,7 @@ instance FromJSON Msg where
 
 data Body where
   Init :: {nodeId :: T.Text, nodeIds :: [T.Text]} -> Body
+  InitOk :: Body
   Echo :: {echo :: T.Text} -> Body
   EchoOk :: {echo :: T.Text} -> Body
   deriving (Eq, Generic, Show)
